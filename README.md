@@ -30,12 +30,16 @@ Las rutas que no necesiten servidor pueden marcarse con
 `export const prerender = true` sin cambiar nada más: la decisión es por ruta, no
 global.
 
-### Por qué contenido tipado
+### Por qué una sola página
 
-Los proyectos viven en `src/content/proyectos/*.md` bajo una **colección con
-esquema Zod** (`src/content.config.ts`). El frontmatter se valida en tiempo de
-compilación: un campo mal escrito **rompe el build**, no la página en producción.
-Es la diferencia entre descubrir un error en CI y descubrirlo en un cliente.
+El sitio es un *one-pager* con seis secciones (perfil, proyectos, despliegue,
+medición, decisiones y contacto). El diseño se concibió así: el recorrido es
+lineal y cada sección demuestra algo del anterior. Las páginas secundarias que
+sí justifican URL propia —`/privacidad`— usan un layout mínimo aparte.
+
+La interactividad (hash SHA-256 en vivo, filtros, recorrido del pipeline,
+acordeón) está implementada en `src/scripts/perfil.ts` con enlaces `data-*`
+sobre el markup: sin framework de cliente y sin hidratación.
 
 ### Por qué esta analítica y no otra
 
@@ -59,6 +63,18 @@ En lo técnico:
 El diseño responde a una idea concreta: se puede medir con rigor sin construir
 perfiles de personas. Medir la organización que lee, no al individuo que mira.
 
+### Por qué el formulario no lleva CAPTCHA
+
+Un *honeypot* (`empresa_web`, oculto y con `aria-hidden`) más validación en
+servidor y límite de frecuencia por IP. Cuando el campo llega relleno, la
+respuesta es **200 con una referencia falsa**: el bot no obtiene señal de haber
+sido detectado. Ningún script de terceros, ninguna cookie, ninguna cesión de
+datos — coherente con el resto del sitio.
+
+El mensaje se entrega en `eloy@dalyko.com` a través del backend propio
+(`CONTACTO_ENDPOINT`). Si el backend falla, el contenido queda registrado en
+Cloud Logging con su referencia: nunca se pierde un contacto.
+
 ### Por qué este contenedor
 
 `Dockerfile` multi-stage con tres etapas (`deps`, `build`, `runtime`):
@@ -74,15 +90,15 @@ perfiles de personas. Medir la organización que lee, no al individuo que mira.
 
 ```
 src/
-├── content/proyectos/     Proyectos en Markdown, validados por esquema
-├── content.config.ts      Esquema Zod de la colección
-├── layouts/Base.astro     Shell HTML: SEO, Open Graph, JSON-LD, baliza
+├── layouts/Simple.astro   Layout de las páginas secundarias
 ├── lib/analitica.ts       Derivación del id de visita y emisión de eventos
 ├── middleware.ts          Registro de vista por petición (servidor)
 ├── pages/
-│   ├── api/evento.ts      Baliza de interacción (sendBeacon)
-│   └── ...                Rutas del sitio
-└── styles/tokens.css      Sistema de diseño: tokens, sin dependencias
+│   ├── index.astro        La página: seis secciones
+│   ├── privacidad.astro   Qué se mide y qué no
+│   └── api/               contacto.ts · evento.ts
+├── scripts/perfil.ts      Runtime propio: bindings, demos, formulario
+└── styles/                tokens.css · perfil.css
 ```
 
 ## SEO técnico

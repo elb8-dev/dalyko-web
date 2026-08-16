@@ -1,0 +1,53 @@
+---
+import '../styles/tokens.css';
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+}
+const { titulo, descripcion } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://perfil.dalyko.com');
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonical.href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content="es_ES" />
+  </head>
+  <body>
+    <header class="sitio">
+      <nav class="contenedor" aria-label="Principal">
+        <a class="marca" href="/">Eloy R. Becerra Daly</a>
+        <ul>
+          <li><a href="/#proyectos">Proyectos</a></li>
+          <li><a href="/#medicion">Medición</a></li>
+          <li><a href="/#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="contenedor">
+      <slot />
+    </main>
+
+    <footer class="sitio">
+      <div class="contenedor">
+        <p>Eloy R. Becerra Daly · <a href="mailto:daly@icam.es">daly@icam.es</a> · 642 568 664</p>
+        <p class="meta">
+          Astro con renderizado en servidor sobre Google Cloud Run. Analítica
+          propia agregada, sin cookies ni seguimiento de personas.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
