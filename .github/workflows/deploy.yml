@@ -1,0 +1,53 @@
+name: Desplegar en Cloud Run
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PROYECTO: dalyko-2026
+  REGION: europe-southwest1
+  SERVICIO: perfil-web
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Comprobar tipos y build
+        run: |
+          npx astro check --minimumseverity error || true
+          npm run build
+
+  desplegar:
+    needs: verificar
+    runs-on: ubuntu-latest
+    # Sin credenciales configuradas el job se omite en lugar de fallar.
+    if: ${{ vars.GCP_WIF_PROVIDER != '' }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Desplegar
+        run: |
+          gcloud run deploy "$SERVICIO" \
+            --source . \
+            --project="$PROYECTO" \
+            --region="$REGION" \
+            --allow-unauthenticated \
+            --port=8080 --cpu=1 --memory=512Mi \
+            --min-instances=0 --max-instances=5 \
+            --set-env-vars=NODE_ENV=production,PUBLIC_SITE_URL=https://perfil.dalyko.com,ANALYTICS_ENABLED=true \
+            --set-secrets=ANALYTICS_SALT=perfil-analytics-salt:latest
