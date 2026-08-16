@@ -105,7 +105,7 @@ resuelve desde Secret Manager.
 
 ## Despliegue
 
-Contenedor a **Cloud Run** (proyecto `dalyko-2026`, región `europe-southwest1`),
+Contenedor a **Cloud Run** (proyecto `dalyko-2026`, región `europe-west1`),
 publicado en `perfil.dalyko.com` a través del balanceador HTTPS existente.
 Ver [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md).
 

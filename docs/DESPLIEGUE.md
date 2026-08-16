@@ -1,104 +1,95 @@
 # Despliegue — `perfil.dalyko.com`
 
-**Proyecto:** `dalyko-2026` · **Región:** `europe-southwest1` (Madrid)
-**Servicio Cloud Run:** `perfil-web` · **Dominio:** `perfil.dalyko.com`
+**Proyecto:** `dalyko-2026` · **Región:** `europe-west1`
+**Servicio Cloud Run:** `perfil-web` · **URL directa:** https://perfil-web-476507278172.europe-west1.run.app
 
 ---
 
-## Decisión: servicio propio detrás del balanceador existente
+## Decisión: servicio propio en la región de los mapeos de dominio
 
-La plataforma Dalyko es un **monolito modular** (`lumora-backend`, Fastify de
-proceso único) por razones documentadas en `DalyKo/docs/Arquitectura Monolitica.md`:
+La plataforma es un **monolito modular** (`lumora-backend`, Fastify de proceso
+único) por razones documentadas en `DalyKo/docs/Arquitectura Monolitica.md`:
 coherencia transaccional con un solo `pg.Pool`, auditoría unificada con
 *hash-chain* en `audit_log` y cold-start económico.
 
-**Esas razones no aplican a este sitio**, que no escribe en la base de datos, no
-participa en transacciones y no genera entradas de auditoría. Por tanto:
+**Esas razones no aplican a este sitio**, que no escribe en base de datos, no
+participa en transacciones y no genera auditoría. Se despliega, por tanto, como
+**servicio independiente** dentro del mismo proyecto.
 
-> El perfil se despliega como **servicio de Cloud Run independiente** (`perfil-web`)
-> en el **mismo proyecto y región**, y se publica a través del **balanceador HTTPS
-> ya existente** mediante una regla de host para `perfil.dalyko.com`.
+La región es **`europe-west1`** y no `europe-southwest1` por un motivo concreto:
+los ***domain mappings* de Cloud Run no están disponibles en `europe-southwest1`**.
+El resto de dominios de la plataforma (`admin.dalyko.com`, `api.dalyko.com`,
+`lumoraip.com`, `portal.quickconvey.es`) están mapeados en `europe-west1`, de
+modo que el perfil sigue exactamente el mismo patrón ya probado.
 
-Con ello se obtiene lo mejor de ambas opciones:
-
-| | |
-|---|---|
-| **Misma infraestructura** | Mismo proyecto, misma región, mismo balanceador, misma observabilidad (Cloud Logging) y mismo Artifact Registry |
-| **Despliegues independientes** | Publicar el perfil no puede tumbar el backend, ni al revés |
-| **Runtimes separados** | Astro corre sobre Node; no hay que forzarlo dentro de Fastify |
-| **Coste marginal** | `min-instances=0`: sin tráfico, no cuesta nada |
+> Nota: no existe balanceador HTTPS en el proyecto — la Compute Engine API está
+> deshabilitada. La publicación se hace con *domain mappings* nativos de Cloud
+> Run, que resuelven certificado y TLS automáticamente.
 
 ---
 
-## 1. Requisitos previos (una sola vez)
+## 1. Secreto de la analítica (una sola vez)
 
 ```bash
-gcloud auth login
-gcloud config set project dalyko-2026
+openssl rand -hex 32 | gcloud secrets create perfil-analytics-salt \
+  --data-file=- --project=dalyko-2026
 
-# Repositorio de imágenes (reutiliza el existente si ya lo hay)
-gcloud artifacts repositories create dalyko \
-  --repository-format=docker --location=europe-southwest1 \
-  --description="Imágenes de la plataforma Dalyko"
-
-# Secreto de la analítica
-openssl rand -hex 32 | gcloud secrets create perfil-analytics-salt --data-file=-
+gcloud secrets add-iam-policy-binding perfil-analytics-salt \
+  --member="serviceAccount:476507278172-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor" --project=dalyko-2026
 ```
 
-## 2. Construir y desplegar
+## 2. Desplegar
 
 ```bash
 gcloud run deploy perfil-web \
   --source . \
   --project=dalyko-2026 \
-  --region=europe-southwest1 \
+  --region=europe-west1 \
   --allow-unauthenticated \
-  --port=8080 \
-  --cpu=1 --memory=512Mi \
+  --port=8080 --cpu=1 --memory=512Mi \
   --min-instances=0 --max-instances=5 \
   --set-env-vars=NODE_ENV=production,PUBLIC_SITE_URL=https://perfil.dalyko.com,ANALYTICS_ENABLED=true \
   --set-secrets=ANALYTICS_SALT=perfil-analytics-salt:latest
 ```
 
-> `--source .` usa el `Dockerfile` del repositorio a través de Cloud Build. Para
-> construir en local: `gcloud builds submit --tag europe-southwest1-docker.pkg.dev/dalyko-2026/dalyko/perfil-web`.
+`--source .` construye con Cloud Build a partir del `Dockerfile`. El
+`.gcloudignore` evita subir `node_modules` y `dist`.
 
-## 3. Publicar en el balanceador existente
+## 3. Publicar en `perfil.dalyko.com`
 
-```bash
-# NEG sin servidor que apunta al servicio
-gcloud compute network-endpoint-groups create perfil-web-neg \
-  --region=europe-southwest1 --network-endpoint-type=serverless \
-  --cloud-run-service=perfil-web
-
-# Servicio de backend
-gcloud compute backend-services create perfil-web-bs \
-  --global --load-balancing-scheme=EXTERNAL_MANAGED
-gcloud compute backend-services add-backend perfil-web-bs \
-  --global --network-endpoint-group=perfil-web-neg \
-  --network-endpoint-group-region=europe-southwest1
-
-# Regla de host en el url-map existente (sustituir <URL_MAP> por el real)
-gcloud compute url-maps add-path-matcher <URL_MAP> \
-  --path-matcher-name=perfil --default-service=perfil-web-bs \
-  --new-hosts=perfil.dalyko.com
-```
-
-Añadir `perfil.dalyko.com` al certificado gestionado y crear el registro **A**
-del DNS apuntando a la IP del balanceador.
-
-**Alternativa más simple** (sin tocar el balanceador), si se prefiere:
+**Requisito previo — verificar el dominio.** La cuenta debe tener `dalyko.com`
+verificado en Google Search Console:
 
 ```bash
-gcloud beta run domain-mappings create --service=perfil-web \
-  --domain=perfil.dalyko.com --region=europe-southwest1
+gcloud domains verify dalyko.com   # abre Search Console en el navegador
 ```
+
+Una vez verificado:
+
+```bash
+gcloud beta run domain-mappings create \
+  --service=perfil-web --domain=perfil.dalyko.com \
+  --project=dalyko-2026 --region=europe-west1
+```
+
+El comando devuelve el registro DNS a crear. Para un subdominio es un **CNAME**:
+
+| Tipo | Nombre | Valor |
+|------|--------|-------|
+| CNAME | `perfil` | `ghs.googlehosted.com.` |
+
+El DNS de `dalyko.com` se gestiona en **GoDaddy** (`ns01/ns02.domaincontrol.com`).
+
+> ⚠️ **No tocar los registros MX.** `dalyko.com` tiene correo en Google Workspace
+> (`MX → smtp.google.com`). Añadir un CNAME de subdominio no los afecta, pero
+> cualquier cambio de servidores de nombres sí rompería el correo.
 
 ## 4. Verificación
 
 ```bash
-curl -I https://perfil.dalyko.com                      # 200 y cabeceras
-curl -s https://perfil.dalyko.com/sitemap-index.xml    # sitemap
+curl -I https://perfil.dalyko.com
+curl -s https://perfil.dalyko.com/sitemap-index.xml
 curl -s "https://perfil.dalyko.com/?ref=prueba" | grep -o '<title>[^<]*'
 ```
 
@@ -113,14 +104,13 @@ gcloud logging read \
   --project=dalyko-2026 --limit=50 --format=json
 ```
 
-Para informes recurrentes, crear un *sink* de Cloud Logging hacia BigQuery y
-consultar por `ref`, `ruta`, `segundos` y `scrollMax`.
+Para informes recurrentes, crear un *sink* hacia BigQuery y consultar por `ref`,
+`ruta`, `segundos` y `scrollMax`.
 
 ---
 
-## Despliegue continuo (opcional)
+## Despliegue continuo
 
-`.github/workflows/deploy.yml` publica automáticamente al hacer *push* a `main`,
-autenticándose con **Workload Identity Federation** (sin claves de servicio en el
-repositorio). Requiere configurar en GitHub los secretos `GCP_WIF_PROVIDER` y
-`GCP_SERVICE_ACCOUNT`.
+`.github/workflows/deploy.yml` publica al hacer *push* a `main`, autenticándose
+con **Workload Identity Federation** (sin claves de servicio en el repositorio).
+Requiere las variables `GCP_WIF_PROVIDER` y `GCP_SERVICE_ACCOUNT` en GitHub.
