@@ -1,17 +1,63 @@
 ---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
 
+const ref = Astro.url.searchParams.get('ref');
+const enlace = (href: string) => (ref ? `${href}?ref=${encodeURIComponent(ref)}` : href);
+
+const destacados = (await getCollection('proyectos'))
+  .filter((p) => p.data.destacado)
+  .sort((a, b) => a.data.orden - b.data.orden);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base
+  titulo="Eloy R. Becerra Daly — Desarrollo y transformación digital"
+  descripcion="Desarrollador y consultor de transformación. Migraciones de sistemas, integraciones por API y plataformas web. Python, TypeScript, React y WordPress."
+>
+  <p class="eyebrow">Desarrollo · Migraciones · Transformación digital</p>
+  <h1>Construyo sistemas y migro los que ya existen sin romper el negocio.</h1>
+  <p class="lede">
+    Trabajo donde se juntan el código y la operación: arquitectura de servicios,
+    integraciones por API y migraciones de datos con corte limpio. Formación
+    jurídica de origen, lo que aporta criterio en gobierno del dato, protección
+    de datos y contratación. Español e inglés nativos.
+  </p>
+
+  <h2>Lo que hago</h2>
+  <div class="rejilla">
+    <div class="tarjeta">
+      <h3>Desarrollo</h3>
+      <p>Servicios en Python, front-end en React y TypeScript, integraciones en C#, datos en PostgreSQL.</p>
+    </div>
+    <div class="tarjeta">
+      <h3>Migraciones</h3>
+      <p>Inventario, mapeo de campos, depuración y corte del sistema anterior sin interrumpir el servicio.</p>
+    </div>
+    <div class="tarjeta">
+      <h3>Web y SEO técnico</h3>
+      <p>Plataformas multiidioma, <code>hreflang</code>, datos estructurados, rendimiento y renderizado en servidor.</p>
+    </div>
+  </div>
+
+  <h2>Proyectos destacados</h2>
+  <div class="rejilla">
+    {destacados.map((p) => (
+      <article class="tarjeta">
+        <h3><a href={enlace(`/proyectos/${p.id}`)}>{p.data.titulo}</a></h3>
+        <p class="meta">{p.data.organizacion} · {p.data.periodo}</p>
+        <p>{p.data.resumen}</p>
+        <p>{p.data.stack.slice(0, 5).map((t) => <span class="chip">{t}</span>)}</p>
+      </article>
+    ))}
+  </div>
+  <p><a href={enlace('/proyectos')}>Ver todos los proyectos →</a></p>
+
+  <h2>Esta misma página</h2>
+  <p>
+    Está construida con <strong>Astro 7</strong> y renderizada en el servidor
+    (HTML en <em>streaming</em>), empaquetada en un contenedor endurecido y
+    desplegada en <strong>Google Cloud Run</strong>. La analítica es propia,
+    agregada y sin cookies — el planteamiento y las decisiones están explicados
+    en el repositorio.
+  </p>
+</Base>

@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  titulo="Tratamiento de datos — Eloy R. Becerra Daly"
+  descripcion="Qué mide esta web, cómo y por qué: analítica agregada, sin cookies y sin perfilado de personas."
+>
+  <p class="eyebrow">Transparencia</p>
+  <h1>Qué mide esta web</h1>
+  <p class="lede">
+    Esta página usa analítica propia, alojada en mi propia infraestructura.
+    No emplea cookies, no accede al almacenamiento de tu navegador y no
+    construye perfiles de personas.
+  </p>
+
+  <h2>Qué se registra</h2>
+  <ul>
+    <li>La <strong>ruta</strong> visitada y la fecha y hora.</li>
+    <li>La <strong>procedencia</strong> (<code>referrer</code>) y, si el enlace la lleva, una etiqueta de campaña.</li>
+    <li>El <strong>tipo de dispositivo</strong> y la familia de navegador.</li>
+    <li>El <strong>país</strong>, con granularidad de país.</li>
+    <li>Al abandonar la página, <strong>segundos de lectura</strong> y <strong>porcentaje de scroll</strong>.</li>
+  </ul>
+
+  <h2>Qué NO se registra</h2>
+  <ul>
+    <li>No se almacena tu <strong>dirección IP</strong>.</li>
+    <li>No se instalan <strong>cookies</strong> ni identificadores persistentes.</li>
+    <li>No hay <em>fingerprinting</em>, ni seguimiento entre sesiones o entre sitios.</li>
+    <li>No se cede ningún dato a terceros con fines publicitarios.</li>
+  </ul>
+
+  <h2>Cómo se agrupan las visitas sin identificar a nadie</h2>
+  <p>
+    Para contar visitas sin repetir, se deriva un identificador efímero mediante
+    una función resumen sobre una <strong>sal que rota cada día</strong>. Es
+    irreversible y deja de ser válido al cambiar el día, de modo que no permite
+    reconstruir un historial ni vincularlo a una persona.
+  </p>
+
+  <h2>Base jurídica y derechos</h2>
+  <p>
+    El tratamiento se ampara en el interés legítimo (art. 6.1.f RGPD) en conocer
+    de forma agregada el uso de mi propia página, con un impacto mínimo por
+    diseño. Responsable: Eloy R. Becerra Daly ·
+    <a href="mailto:daly@icam.es">daly@icam.es</a>. Puedes escribirme para
+    ejercer cualquier derecho de los arts. 15 a 22 RGPD.
+  </p>
+</Base>
