@@ -1,63 +1,691 @@
 ---
-import { getCollection } from 'astro:content';
-import Base from '../layouts/Base.astro';
+import '../styles/perfil.css';
 
-const ref = Astro.url.searchParams.get('ref');
-const enlace = (href: string) => (ref ? `${href}?ref=${encodeURIComponent(ref)}` : href);
+const descripcion =
+  'Eloy R. Becerra Daly — desarrollo, migraciones de sistemas y transformacion digital. ' +
+  'Astro sobre Cloud Run, analitica sin cookies y proyectos con cifras reales.';
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://perfil.dalyko.com');
 
-const destacados = (await getCollection('proyectos'))
-  .filter((p) => p.data.destacado)
-  .sort((a, b) => a.data.orden - b.data.orden);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Eloy R. Becerra Daly',
+  jobTitle: 'Desarrollador y consultor de transformacion digital',
+  url: 'https://perfil.dalyko.com',
+  email: 'mailto:daly@icam.es',
+  telephone: '+34642568664',
+  address: { '@type': 'PostalAddress', addressLocality: 'Pilar de la Horadada', addressRegion: 'Alicante', addressCountry: 'ES' },
+  knowsLanguage: ['es', 'en'],
+  sameAs: ['https://orcid.org/0009-0008-6684-6726', 'https://github.com/elb8-dev'],
+};
 ---
 
-<Base
-  titulo="Eloy R. Becerra Daly — Desarrollo y transformación digital"
-  descripcion="Desarrollador y consultor de transformación. Migraciones de sistemas, integraciones por API y plataformas web. Python, TypeScript, React y WordPress."
->
-  <p class="eyebrow">Desarrollo · Migraciones · Transformación digital</p>
-  <h1>Construyo sistemas y migro los que ya existen sin romper el negocio.</h1>
-  <p class="lede">
-    Trabajo donde se juntan el código y la operación: arquitectura de servicios,
-    integraciones por API y migraciones de datos con corte limpio. Formación
-    jurídica de origen, lo que aporta criterio en gobierno del dato, protección
-    de datos y contratación. Español e inglés nativos.
-  </p>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Eloy R. Becerra Daly — Desarrollo y transformacion digital</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonical.href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Eloy R. Becerra Daly" />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+<div style="background:var(--papel);min-height:100vh">
 
-  <h2>Lo que hago</h2>
-  <div class="rejilla">
-    <div class="tarjeta">
-      <h3>Desarrollo</h3>
-      <p>Servicios en Python, front-end en React y TypeScript, integraciones en C#, datos en PostgreSQL.</p>
+  <header style="position:sticky;top:0;z-index:40;background:rgba(252,250,245,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--linea)">
+    <div style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;padding:.85rem 0">
+      <a href="#perfil" style="display:flex;align-items:center;gap:.6rem;text-decoration:none">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radio);background:var(--tinta);color:var(--papel);font-family:var(--fuente-mono);font-size:.7rem;letter-spacing:.02em">EB</span>
+        <span style="font-family:var(--fuente-titulo);font-weight:700;color:var(--tinta);font-size:1.05rem">Eloy R. Becerra Daly</span>
+      </a>
+      <nav style="display:flex;align-items:center;gap:1.25rem">
+        <a href="#proyectos" style="position:relative;text-decoration:none;font-size:.95rem;padding-bottom:.15rem">Proyectos<span style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:" data-style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:{navProyectos}"></span></a>
+        <a href="#despliegue" style="position:relative;text-decoration:none;font-size:.95rem;padding-bottom:.15rem">Despliegue<span style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:" data-style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:{navDespliegue}"></span></a>
+        <a href="#medicion" style="position:relative;text-decoration:none;font-size:.95rem;padding-bottom:.15rem">Medición<span style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:" data-style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:{navMedicion}"></span></a>
+        <a href="#decisiones" style="position:relative;text-decoration:none;font-size:.95rem;padding-bottom:.15rem">Decisiones<span style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:" data-style="position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--laton);transition:opacity .25s ease;opacity:{navDecisiones}"></span></a>
+        <a href="#contacto" style="display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:.9rem;border:1px solid var(--tinta);color:var(--tinta);border-radius:100px;padding:.3rem .85rem;transition:background .2s ease,color .2s ease" class="xed60119">Contacto
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+        </a>
+      </nav>
     </div>
-    <div class="tarjeta">
-      <h3>Migraciones</h3>
-      <p>Inventario, mapeo de campos, depuración y corte del sistema anterior sin interrumpir el servicio.</p>
-    </div>
-    <div class="tarjeta">
-      <h3>Web y SEO técnico</h3>
-      <p>Plataformas multiidioma, <code>hreflang</code>, datos estructurados, rendimiento y renderizado en servidor.</p>
-    </div>
-  </div>
+  </header>
 
-  <h2>Proyectos destacados</h2>
-  <div class="rejilla">
-    {destacados.map((p) => (
-      <article class="tarjeta">
-        <h3><a href={enlace(`/proyectos/${p.id}`)}>{p.data.titulo}</a></h3>
-        <p class="meta">{p.data.organizacion} · {p.data.periodo}</p>
-        <p>{p.data.resumen}</p>
-        <p>{p.data.stack.slice(0, 5).map((t) => <span class="chip">{t}</span>)}</p>
-      </article>
-    ))}
-  </div>
-  <p><a href={enlace('/proyectos')}>Ver todos los proyectos →</a></p>
+  <main>
 
-  <h2>Esta misma página</h2>
-  <p>
-    Está construida con <strong>Astro 7</strong> y renderizada en el servidor
-    (HTML en <em>streaming</em>), empaquetada en un contenedor endurecido y
-    desplegada en <strong>Google Cloud Run</strong>. La analítica es propia,
-    agregada y sin cookies — el planteamiento y las decisiones están explicados
-    en el repositorio.
-  </p>
-</Base>
+    <section id="perfil" style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto;padding:4.5rem 0 3rem">
+      <div style="display:grid;gap:3rem;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:start">
+        <div>
+          <p style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--laton);font-weight:700;margin:0 0 .75rem">perfil.dalyko.com · Astro 7 SSR · Cloud Run</p>
+          <h1 style="font-family:var(--fuente-titulo);color:var(--tinta);line-height:1.1;font-size:clamp(2.2rem,5.2vw,3.4rem);margin:0 0 1rem">Eloy R. Becerra&nbsp;Daly</h1>
+          <p style="font-size:1.15rem;color:var(--tinta-2);margin:0 0 1.25rem;max-width:34rem">Desarrollo de software, integración de sistemas y despliegue en producción.</p>
+          <p style="font-size:1.05rem;color:var(--texto-suave);max-width:40rem;margin:0 0 1.75rem;text-wrap:pretty">Este sitio <em>es</em> la muestra de trabajo. No es una plantilla: cada decisión —renderizado en servidor, contenido tipado, analítica sin cookies, contenedor endurecido y despliegue continuo— está tomada a propósito y explicada aquí.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem">
+            <a href="#proyectos" style="display:inline-flex;align-items:center;gap:.45rem;text-decoration:none;background:var(--tinta);color:var(--papel);border-radius:100px;padding:.6rem 1.15rem;font-size:.95rem;transition:background .2s ease,transform .2s ease" class="x6d4f2d7">Ver proyectos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="#despliegue" style="display:inline-flex;align-items:center;gap:.45rem;text-decoration:none;border:1px solid var(--linea);background:var(--papel-2);color:var(--tinta);border-radius:100px;padding:.6rem 1.15rem;font-size:.95rem;transition:border-color .2s ease" class="xc501318">Cómo se despliega</a>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.75rem">
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">TypeScript</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">Python</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">React</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">C#</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">PostgreSQL</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">Docker</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">Cloud Run</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .6rem;color:var(--texto-suave)">API REST</span>
+          </div>
+        </div>
+
+        <aside style="border:1px solid var(--panel-linea);border-radius:var(--radio);background:var(--panel);overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.6rem .85rem;border-bottom:1px solid var(--panel-linea);background:var(--panel-2)">
+            <span style="display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fuente-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--laton-claro)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" x2="20" y1="19" y2="19"></line></svg>
+              evento en curso
+            </span>
+            <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:var(--fuente-mono);font-size:.68rem;color:var(--panel-suave)"><span style="width:6px;height:6px;border-radius:100px;background:#6ea87f;animation:latir 2s ease-in-out infinite"></span>stdout</span>
+          </div>
+          <pre style="margin:0;padding:.9rem .95rem;font-family:var(--fuente-mono);font-size:.72rem;line-height:1.75;color:var(--panel-texto);white-space:pre-wrap;word-break:break-word"><span style="color:var(--panel-suave)">&#123;</span>
+  <span style="color:var(--laton-claro)">"tipo"</span>: "vista",
+  <span style="color:var(--laton-claro)">"ruta"</span>: "/",
+  <span style="color:var(--laton-claro)">"ref"</span>: <span data-t="refJson"></span>,
+  <span style="color:var(--laton-claro)">"visitaId"</span>: "<span data-t="hash"></span>",
+  <span style="color:var(--laton-claro)">"dispositivo"</span>: "<span data-t="dispositivo"></span>",
+  <span style="color:var(--laton-claro)">"navegador"</span>: "<span data-t="navegador"></span>",
+  <span style="color:var(--laton-claro)">"segundos"</span>: <span data-t="segundos"></span>,
+  <span style="color:var(--laton-claro)">"scrollMax"</span>: <span data-t="scrollMax"></span><span style="display:inline-block;width:7px;height:1em;vertical-align:-2px;background:var(--laton);animation:cursor 1.1s step-end infinite"></span>
+<span style="color:var(--panel-suave)">&#125;</span></pre>
+          <p style="margin:0;padding:.7rem .95rem;border-top:1px solid var(--panel-linea);background:var(--panel-2);font-size:.75rem;line-height:1.5;color:var(--panel-suave)">Lo que este sitio registra de ti ahora mismo. Sin cookies, sin almacenamiento en tu navegador, sin guardar tu IP.</p>
+        </aside>
+      </div>
+
+      <div data-reveal="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3.5rem;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)">
+        <div style="padding:1.5rem 1.5rem 1.5rem 0">
+          <div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:2rem;line-height:1">~5.000</div>
+          <p style="margin:.35rem 0 0;font-size:.85rem;color:var(--texto-suave)">commits en el sistema de trading, 10 meses a dedicación casi completa</p>
+        </div>
+        <div style="padding:1.5rem;border-left:1px solid var(--linea)">
+          <div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:2rem;line-height:1">~45.000</div>
+          <p style="margin:.35rem 0 0;font-size:.85rem;color:var(--texto-suave)">leads migrados con corte del sistema anterior en una sola jornada</p>
+        </div>
+        <div style="padding:1.5rem 0 1.5rem 1.5rem;border-left:1px solid var(--linea)">
+          <div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:2rem;line-height:1">14</div>
+          <p style="margin:.35rem 0 0;font-size:.85rem;color:var(--texto-suave)">locales con <span style="font-family:var(--fuente-mono);font-size:.8rem">hreflang</span> y redirección por idioma del navegador</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="proyectos" style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto;padding:3.5rem 0">
+      <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:end;justify-content:space-between;margin-bottom:1.75rem">
+        <div>
+          <p style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--laton);font-weight:700;margin:0 0 .5rem">Proyectos</p>
+          <h2 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:clamp(1.5rem,3vw,2rem);margin:0">Cuatro trabajos, con sus números.</h2>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;align-items:center">
+          <span style="font-size:.75rem;color:var(--texto-suave);margin-right:.25rem">Filtrar:</span>
+          <button type="button" data-on-click="filtrarTodo" style="cursor:pointer;font-family:var(--fuente-mono);font-size:.72rem;border:1px solid var(--linea);border-radius:100px;padding:.2rem .7rem;background:var(--papel-2);color:var(--texto-suave);transition:all .2s ease;position:relative" class="xc501318"><span style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:;transition:opacity .2s ease" data-style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:{fTodo};transition:opacity .2s ease"></span><span style="position:relative;color:" data-style="position:relative;color:{fTodoTxt}">todos</span></button>
+          <button type="button" data-on-click="filtrarTs" style="cursor:pointer;font-family:var(--fuente-mono);font-size:.72rem;border:1px solid var(--linea);border-radius:100px;padding:.2rem .7rem;background:var(--papel-2);color:var(--texto-suave);transition:all .2s ease;position:relative" class="xc501318"><span style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:;transition:opacity .2s ease" data-style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:{fTs};transition:opacity .2s ease"></span><span style="position:relative;color:" data-style="position:relative;color:{fTsTxt}">TypeScript</span></button>
+          <button type="button" data-on-click="filtrarApi" style="cursor:pointer;font-family:var(--fuente-mono);font-size:.72rem;border:1px solid var(--linea);border-radius:100px;padding:.2rem .7rem;background:var(--papel-2);color:var(--texto-suave);transition:all .2s ease;position:relative" class="xc501318"><span style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:;transition:opacity .2s ease" data-style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:{fApi};transition:opacity .2s ease"></span><span style="position:relative;color:" data-style="position:relative;color:{fApiTxt}">Integración</span></button>
+          <button type="button" data-on-click="filtrarData" style="cursor:pointer;font-family:var(--fuente-mono);font-size:.72rem;border:1px solid var(--linea);border-radius:100px;padding:.2rem .7rem;background:var(--papel-2);color:var(--texto-suave);transition:all .2s ease;position:relative" class="xc501318"><span style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:;transition:opacity .2s ease" data-style="position:absolute;inset:0;border-radius:100px;background:var(--tinta);opacity:{fData};transition:opacity .2s ease"></span><span style="position:relative;color:" data-style="position:relative;color:{fDataTxt}">Datos</span></button>
+        </div>
+      </div>
+
+      <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(2,minmax(0,1fr))">
+
+        <div data-if="v1" style="display:contents">
+        <article data-reveal="" style="border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);padding:1.5rem;display:flex;flex-direction:column;transition:border-color .2s ease,box-shadow .2s ease" class="xd0b9677">
+          <div style="display:flex;align-items:start;justify-content:space-between;gap:1rem;margin-bottom:.6rem">
+            <div>
+              <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.35rem">
+                <span style="display:inline-flex;align-items:center;gap:.3rem;font-family:var(--fuente-mono);font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;color:#8a6d2f;background:rgba(182,146,77,.14);border:1px solid rgba(182,146,77,.35);border-radius:100px;padding:.1rem .5rem">destacado</span>
+                <span style="display:inline-flex;align-items:center;gap:.3rem;font-family:var(--fuente-mono);font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;color:var(--texto-suave);border:1px solid var(--linea);border-radius:100px;padding:.1rem .5rem">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  privado
+                </span>
+              </div>
+              <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.2rem;margin:0">Sistema de trading algorítmico</h3>
+            </div>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave);white-space:nowrap">2025 – 2026</span>
+          </div>
+          <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">Proyecto propio · Plataforma de decisión automatizada: microservicios en Python, front en React/TypeScript, integración en C# y entrenamiento de modelos en GPU.</p>
+          <div style="display:flex;gap:1.5rem;padding:.75rem 0;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);margin-bottom:.9rem">
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">~5.000</div><div style="font-size:.72rem;color:var(--texto-suave)">commits</div></div>
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">10 meses</div><div style="font-size:.72rem;color:var(--texto-suave)">a dedicación casi completa</div></div>
+          </div>
+          <div data-if="a1" style="display:contents">
+            <ul style="margin:0 0 .9rem;padding-left:1.1rem;font-size:.88rem;color:var(--texto-suave);display:flex;flex-direction:column;gap:.45rem">
+              <li><strong style="color:var(--texto)">Microservicios en Python</strong> con responsabilidades separadas: decisión, riesgo, análisis cuantitativo, aprendizaje y orquestación.</li>
+              <li><strong style="color:var(--texto)">Front-end de gestión en React y TypeScript</strong> (Vite), con sistema de diseño propio y aplicación de escritorio empaquetada.</li>
+              <li><strong style="color:var(--texto)">Integración en C#</strong> con una plataforma externa de terceros y capa de ejecución sobre puertos dedicados.</li>
+              <li><strong style="color:var(--texto)">PostgreSQL</strong> con esquema particionado y control de escritura única por partición.</li>
+              <li><strong style="color:var(--texto)">Entrenamiento en GPU</strong>, con ciclo de evaluación y validación reproducible.</li>
+            </ul>
+            <p style="margin:0 0 .9rem;font-size:.85rem;color:var(--texto-suave);font-style:italic">Repositorio privado por la naturaleza del proyecto. Puedo enseñar el código y la arquitectura en una conversación técnica.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto">
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">Python</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">TypeScript</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">React</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">C#</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">PostgreSQL</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">Docker</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">GPU</span>
+          </div>
+          <button type="button" data-on-click="abrir1" style="margin-top:1rem;align-self:start;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;background:none;border:0;padding:0;font-family:inherit;font-size:.85rem;color:var(--tinta-2)" class="xe210f37"><span data-t="t1"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;transition:transform .25s ease;transform:rotate(deg)" data-style="width:14px;height:14px;transition:transform .25s ease;transform:rotate({r1}deg)"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+        </article>
+        </div>
+
+        <div data-if="v2" style="display:contents">
+        <article data-reveal="" style="border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);padding:1.5rem;display:flex;flex-direction:column;transition:border-color .2s ease,box-shadow .2s ease" class="xd0b9677">
+          <div style="display:flex;align-items:start;justify-content:space-between;gap:1rem;margin-bottom:.6rem">
+            <div>
+              <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.35rem">
+                <span style="display:inline-flex;align-items:center;gap:.3rem;font-family:var(--fuente-mono);font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;color:#8a6d2f;background:rgba(182,146,77,.14);border:1px solid rgba(182,146,77,.35);border-radius:100px;padding:.1rem .5rem">destacado</span>
+              </div>
+              <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.2rem;margin:0">Migración de CRM e integración con la web</h3>
+            </div>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave);white-space:nowrap">2024 – 2025</span>
+          </div>
+          <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">Asset Lighthouse · Sustitución completa del CRM heredado con migración de ~45.000 leads y sincronización automática con el sitio corporativo mediante API y webhooks.</p>
+          <div style="display:flex;gap:1.5rem;padding:.75rem 0;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);margin-bottom:.9rem">
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">~45.000</div><div style="font-size:.72rem;color:var(--texto-suave)">leads migrados</div></div>
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">10 s</div><div style="font-size:.72rem;color:var(--texto-suave)">por ciclo de publicación</div></div>
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">1 jornada</div><div style="font-size:.72rem;color:var(--texto-suave)">de corte, sin parar el negocio</div></div>
+          </div>
+          <div data-if="a2" style="display:contents">
+            <p style="margin:0 0 .6rem;font-size:.88rem;color:var(--texto-suave)">Proyecto de transformación con plan formal de siete fases, del mapeo de procesos a la explotación.</p>
+            <ul style="margin:0 0 .9rem;padding-left:1.1rem;font-size:.88rem;color:var(--texto-suave);display:flex;flex-direction:column;gap:.45rem">
+              <li><strong style="color:var(--texto)">Modelo de datos</strong>: ~85 campos personalizados, diccionario de API entregado a los proveedores y matriz de 8 roles con 5 niveles de permiso.</li>
+              <li><strong style="color:var(--texto)">Migración</strong>: ~400 fichas de inventario y cerca de 45.000 leads de cinco años, con mapeo de campos y depuración de 122 registros erróneos.</li>
+              <li><strong style="color:var(--texto)">Corte en una sola jornada</strong>, con toda la plantilla movilizada y sin interrupción del servicio.</li>
+              <li><strong style="color:var(--texto)">Integración CRM ↔ web</strong> por API REST y webhooks: la publicación pasó de manual a 10 segundos por ciclo, sincronizada cada 15-30 minutos.</li>
+            </ul>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto">
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">API REST</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">Webhooks</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">Zapier</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">WordPress</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">PostgreSQL</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">Zoho</span>
+          </div>
+          <button type="button" data-on-click="abrir2" style="margin-top:1rem;align-self:start;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;background:none;border:0;padding:0;font-family:inherit;font-size:.85rem;color:var(--tinta-2)" class="xe210f37"><span data-t="t2"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;transition:transform .25s ease;transform:rotate(deg)" data-style="width:14px;height:14px;transition:transform .25s ease;transform:rotate({r2}deg)"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+        </article>
+        </div>
+
+        <div data-if="v3" style="display:contents">
+        <article data-reveal="" style="border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);padding:1.5rem;display:flex;flex-direction:column;transition:border-color .2s ease,box-shadow .2s ease" class="xd0b9677">
+          <div style="display:flex;align-items:start;justify-content:space-between;gap:1rem;margin-bottom:.6rem">
+            <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.2rem;margin:0">Plataforma web corporativa en 14 idiomas</h3>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave);white-space:nowrap">2024 – 2025</span>
+          </div>
+          <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">Asset Lighthouse · Sitio corporativo multiidioma con hreflang, redirección por idioma del navegador, certificado SSL EV e integración con el CRM.</p>
+          <div style="display:flex;gap:1.5rem;padding:.75rem 0;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);margin-bottom:.9rem">
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">14</div><div style="font-size:.72rem;color:var(--texto-suave)">locales con hreflang</div></div>
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">~400</div><div style="font-size:.72rem;color:var(--texto-suave)">fichas sincronizadas</div></div>
+          </div>
+          <div data-if="a3" style="display:contents">
+            <ul style="margin:0 0 .9rem;padding-left:1.1rem;font-size:.88rem;color:var(--texto-suave);display:flex;flex-direction:column;gap:.45rem">
+              <li><strong style="color:var(--texto)">14 locales</strong> (es, en, fr, de, nl-BE, nl-NL, pl, sv, nb, da, is, cs, ru, uk) con <span style="font-family:var(--fuente-mono);font-size:.82rem">hreflang</span> y redirección automática según el idioma del navegador.</li>
+              <li>Gestión de <strong style="color:var(--texto)">dominio, hosting y certificado SSL EV</strong>, incluida la documentación legal para su emisión.</li>
+              <li><strong style="color:var(--texto)">Integración con el CRM</strong>: alta, modificación y baja de fichas sincronizadas automáticamente.</li>
+              <li>Coordinación de dos proveedores de desarrollo y redacción de las especificaciones técnicas.</li>
+            </ul>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto">
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">WordPress</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">PHP</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">JavaScript</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">SEO</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">hreflang</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">SSL EV</span>
+          </div>
+          <button type="button" data-on-click="abrir3" style="margin-top:1rem;align-self:start;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;background:none;border:0;padding:0;font-family:inherit;font-size:.85rem;color:var(--tinta-2)" class="xe210f37"><span data-t="t3"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;transition:transform .25s ease;transform:rotate(deg)" data-style="width:14px;height:14px;transition:transform .25s ease;transform:rotate({r3}deg)"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+        </article>
+        </div>
+
+        <div data-if="v4" style="display:contents">
+        <article data-reveal="" style="border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);padding:1.5rem;display:flex;flex-direction:column;transition:border-color .2s ease,box-shadow .2s ease" class="xd0b9677">
+          <div style="display:flex;align-items:start;justify-content:space-between;gap:1rem;margin-bottom:.6rem">
+            <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.2rem;margin:0">Cadena de suministro internacional y comercio electrónico</h3>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave);white-space:nowrap">2022 – 2024</span>
+          </div>
+          <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">Zion Iber Group Ltd. · Diseño y contratación de una cadena de suministro España-Israel, con modelo de coste por referencia y tienda en línea propia.</p>
+          <div style="display:flex;gap:1.5rem;padding:.75rem 0;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);margin-bottom:.9rem">
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">25</div><div style="font-size:.72rem;color:var(--texto-suave)">variables en el modelo de coste</div></div>
+            <div><div style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.35rem;line-height:1.1">16</div><div style="font-size:.72rem;color:var(--texto-suave)">referencias con control documental</div></div>
+          </div>
+          <div data-if="a4" style="display:contents">
+            <ul style="margin:0 0 .9rem;padding-left:1.1rem;font-size:.88rem;color:var(--texto-suave);display:flex;flex-direction:column;gap:.45rem">
+              <li><strong style="color:var(--texto)">Cadena de extremo a extremo</strong>: origen EXW en bodega, almacén de consolidación, puerto seco, puerto de destino y punto de venta, con transitaria, almacén, courier y agente de aduanas contratados.</li>
+              <li><strong style="color:var(--texto)">Modelo de coste puesto en destino</strong> con 25 variables por referencia (clasificación arancelaria, aranceles, impuestos especiales, IVA, transporte y paletización).</li>
+              <li><strong style="color:var(--texto)">4 contratos internacionales</strong> bajo EXW Incoterms® 2020 y matriz de control documental de 11 puntos sobre 16 referencias.</li>
+              <li><strong style="color:var(--texto)">Tienda WooCommerce</strong> con sincronización de stock y catálogo.</li>
+            </ul>
+            <p style="margin:0 0 .9rem;font-size:.85rem;color:var(--texto-suave);font-style:italic">Proyecto interrumpido en fase de pre-lanzamiento por el conflicto de octubre de 2023.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto">
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">WooCommerce</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">WordPress</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">Modelado de costes</span>
+            <span style="font-size:.7rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.1rem .55rem;color:var(--texto-suave)">Incoterms</span>
+          </div>
+          <button type="button" data-on-click="abrir4" style="margin-top:1rem;align-self:start;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;background:none;border:0;padding:0;font-family:inherit;font-size:.85rem;color:var(--tinta-2)" class="xe210f37"><span data-t="t4"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;transition:transform .25s ease;transform:rotate(deg)" data-style="width:14px;height:14px;transition:transform .25s ease;transform:rotate({r4}deg)"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+        </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="despliegue" style="background:var(--panel);border-top:1px solid var(--panel-linea);border-bottom:1px solid var(--panel-linea);padding:4rem 0;margin-top:2rem">
+      <div style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto">
+        <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:end;justify-content:space-between;margin-bottom:2rem">
+          <div style="max-width:38rem">
+            <p style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--laton-claro);font-weight:700;margin:0 0 .5rem">Integración y despliegue continuo</p>
+            <h2 style="font-family:var(--fuente-titulo);color:var(--panel-texto);font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .75rem">De <span style="font-family:var(--fuente-mono);font-size:.8em;color:var(--laton-claro)">git push</span> a producción, sin claves en el repositorio.</h2>
+            <p style="margin:0;color:var(--panel-suave);font-size:.95rem">Pulsa cualquier etapa para ver el comando real y el motivo de la decisión.</p>
+          </div>
+          <button type="button" data-on-click="togglePlay" style="cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--panel-linea);color:var(--panel-texto);border-radius:100px;padding:.4rem 1rem;font-family:var(--fuente-mono);font-size:.75rem;transition:border-color .2s ease" class="xd231fe1">
+            <span style="width:7px;height:7px;border-radius:100px;background:var(--laton-claro)"></span><span data-t="etiquetaPlay"></span>
+          </button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.5rem;position:relative;margin-bottom:1.5rem">
+          <div aria-hidden="true" style="position:absolute;left:8%;right:8%;top:22px;height:2px;background-image:repeating-linear-gradient(90deg,var(--panel-linea) 0 8px,transparent 8px 16px);background-size:28px 2px;animation:fluir 1.4s linear infinite"></div>
+
+          <button type="button" data-on-click="ir0" style="position:relative;cursor:pointer;background:transparent;border:0;padding:0;text-align:center;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem">
+            <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);color:var(--panel-suave);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale();border-color:;color:" data-style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);color:var(--panel-suave);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale({s0});border-color:{b0};color:{c0}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="6" x2="6" y1="3" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+            </span>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:" data-style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:{c0}">push a main</span>
+          </button>
+
+          <button type="button" data-on-click="ir1" style="position:relative;cursor:pointer;background:transparent;border:0;padding:0;text-align:center;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem">
+            <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale();border-color:;color:" data-style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale({s1});border-color:{b1};color:{c1}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            </span>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:" data-style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:{c1}">verificar</span>
+          </button>
+
+          <button type="button" data-on-click="ir2" style="position:relative;cursor:pointer;background:transparent;border:0;padding:0;text-align:center;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem">
+            <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale();border-color:;color:" data-style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale({s2});border-color:{b2};color:{c2}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </span>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:" data-style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:{c2}">autenticar (WIF)</span>
+          </button>
+
+          <button type="button" data-on-click="ir3" style="position:relative;cursor:pointer;background:transparent;border:0;padding:0;text-align:center;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem">
+            <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale();border-color:;color:" data-style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale({s3});border-color:{b3};color:{c3}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="m21 8-9-5-9 5v8l9 5 9-5Z"></path><path d="m3 8 9 5 9-5"></path><path d="M12 13v9"></path></svg>
+            </span>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:" data-style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:{c3}">construir imagen</span>
+          </button>
+
+          <button type="button" data-on-click="ir4" style="position:relative;cursor:pointer;background:transparent;border:0;padding:0;text-align:center;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem">
+            <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale();border-color:;color:" data-style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:100px;background:var(--panel-2);border:1px solid var(--panel-linea);transition:color .3s ease,border-color .3s ease,transform .3s ease;transform:scale({s4});border-color:{b4};color:{c4}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+            </span>
+            <span style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:" data-style="font-family:var(--fuente-mono);font-size:.72rem;line-height:1.3;transition:color .3s ease;color:{c4}">desplegar y publicar</span>
+          </button>
+        </div>
+
+        <div style="height:2px;background:var(--panel-2);border-radius:2px;overflow:hidden;margin-bottom:1.5rem">
+          <div data-ref="refBarra" style="height:100%;background:var(--laton);transform-origin:left center;transform:scaleX(0)"></div>
+        </div>
+
+        <div style="border:1px solid var(--panel-linea);border-radius:var(--radio);background:var(--panel-2);overflow:hidden">
+          <div data-if="e0" style="display:contents">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+              <div style="padding:1.5rem;border-right:1px solid var(--panel-linea)">
+                <h3 style="font-family:var(--fuente-titulo);color:var(--panel-texto);font-size:1.15rem;margin:0 0 .6rem">01 · Disparador</h3>
+                <p style="margin:0;color:var(--panel-suave);font-size:.9rem">El flujo arranca con un push a <span style="font-family:var(--fuente-mono);font-size:.85em;color:var(--laton-claro)">main</span> o a mano desde la interfaz de Actions. Sin ramas de release ni pasos manuales intermedios: el repositorio es la fuente de verdad de lo que está en producción.</p>
+              </div>
+              <pre style="margin:0;padding:1.5rem;font-family:var(--fuente-mono);font-size:.75rem;line-height:1.8;color:var(--panel-texto);overflow-x:auto"><span style="color:var(--panel-suave)">.github/workflows/deploy.yml</span>
+on:
+  push:
+    branches: [<span style="color:var(--laton-claro)">main</span>]
+  workflow_dispatch:</pre>
+            </div>
+          </div>
+          <div data-if="e1" style="display:contents">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+              <div style="padding:1.5rem;border-right:1px solid var(--panel-linea)">
+                <h3 style="font-family:var(--fuente-titulo);color:var(--panel-texto);font-size:1.15rem;margin:0 0 .6rem">02 · Verificar</h3>
+                <p style="margin:0;color:var(--panel-suave);font-size:.9rem">Node 24 con caché de npm, comprobación de tipos y build completo. El esquema Zod de la colección de proyectos se valida aquí: un campo mal escrito en el frontmatter <strong style="color:var(--panel-texto)">rompe el build</strong>, no la página en producción.</p>
+              </div>
+              <pre style="margin:0;padding:1.5rem;font-family:var(--fuente-mono);font-size:.75rem;line-height:1.8;color:var(--panel-texto);overflow-x:auto"><span style="color:var(--panel-suave)">job: verificar</span>
+npm ci
+npx astro check --minimumseverity error
+npm run build</pre>
+            </div>
+          </div>
+          <div data-if="e2" style="display:contents">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+              <div style="padding:1.5rem;border-right:1px solid var(--panel-linea)">
+                <h3 style="font-family:var(--fuente-titulo);color:var(--panel-texto);font-size:1.15rem;margin:0 0 .6rem">03 · Autenticar</h3>
+                <p style="margin:0;color:var(--panel-suave);font-size:.9rem"><strong style="color:var(--panel-texto)">Workload Identity Federation</strong>: GitHub obtiene un token OIDC de corta vida y lo intercambia por credenciales de GCP. No hay claves de cuenta de servicio en el repositorio ni en los secretos. Sin proveedor configurado, el job se omite en lugar de fallar.</p>
+              </div>
+              <pre style="margin:0;padding:1.5rem;font-family:var(--fuente-mono);font-size:.75rem;line-height:1.8;color:var(--panel-texto);overflow-x:auto"><span style="color:var(--panel-suave)">permissions: id-token: write</span>
+uses: google-github-actions/auth@v2
+  workload_identity_provider: $&#123;&#123; vars.GCP_WIF_PROVIDER &#125;&#125;
+  service_account: $&#123;&#123; vars.GCP_SERVICE_ACCOUNT &#125;&#125;</pre>
+            </div>
+          </div>
+          <div data-if="e3" style="display:contents">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+              <div style="padding:1.5rem;border-right:1px solid var(--panel-linea)">
+                <h3 style="font-family:var(--fuente-titulo);color:var(--panel-texto);font-size:1.15rem;margin:0 0 .6rem">04 · Construir</h3>
+                <p style="margin:0 0 1rem;color:var(--panel-suave);font-size:.9rem">Cloud Build compila desde el <span style="font-family:var(--fuente-mono);font-size:.85em;color:var(--laton-claro)">Dockerfile</span> multi-stage. La imagen final no lleva dependencias de compilación ni código fuente, y corre con usuario sin privilegios.</p>
+                <div style="display:flex;flex-direction:column;gap:.5rem">
+                  <div style="display:flex;align-items:center;gap:.6rem;font-family:var(--fuente-mono);font-size:.72rem;color:var(--panel-suave)"><span style="width:18px;height:18px;border-radius:4px;background:rgba(182,146,77,.18);border:1px solid var(--panel-linea);display:inline-flex;align-items:center;justify-content:center;color:var(--laton-claro);font-size:.6rem">1</span>deps · npm ci (cacheable)</div>
+                  <div style="display:flex;align-items:center;gap:.6rem;font-family:var(--fuente-mono);font-size:.72rem;color:var(--panel-suave)"><span style="width:18px;height:18px;border-radius:4px;background:rgba(182,146,77,.18);border:1px solid var(--panel-linea);display:inline-flex;align-items:center;justify-content:center;color:var(--laton-claro);font-size:.6rem">2</span>build · npm run build → dist/</div>
+                  <div style="display:flex;align-items:center;gap:.6rem;font-family:var(--fuente-mono);font-size:.72rem;color:var(--panel-texto)"><span style="width:18px;height:18px;border-radius:4px;background:rgba(182,146,77,.3);border:1px solid var(--laton);display:inline-flex;align-items:center;justify-content:center;color:var(--laton-claro);font-size:.6rem">3</span>runtime · solo dist/ + prod deps</div>
+                </div>
+              </div>
+              <pre style="margin:0;padding:1.5rem;font-family:var(--fuente-mono);font-size:.75rem;line-height:1.8;color:var(--panel-texto);overflow-x:auto"><span style="color:var(--panel-suave)">Dockerfile · runtime</span>
+FROM node:24-alpine AS runtime
+RUN npm ci --omit=dev
+COPY --from=build /app/dist ./dist
+RUN adduser -u <span style="color:var(--laton-claro)">10001</span> -S astro
+USER astro
+EXPOSE 8080</pre>
+            </div>
+          </div>
+          <div data-if="e4" style="display:contents">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+              <div style="padding:1.5rem;border-right:1px solid var(--panel-linea)">
+                <h3 style="font-family:var(--fuente-titulo);color:var(--panel-texto);font-size:1.15rem;margin:0 0 .6rem">05 · Desplegar y publicar</h3>
+                <p style="margin:0 0 1rem;color:var(--panel-suave);font-size:.9rem">Servicio propio, no dentro del monolito: este sitio no escribe en base de datos ni genera auditoría, así que no hay razón para acoplarlo. La región es <span style="font-family:var(--fuente-mono);font-size:.85em;color:var(--laton-claro)">europe-west1</span> porque los <em>domain mappings</em> de Cloud Run no existen en <span style="font-family:var(--fuente-mono);font-size:.85em">europe-southwest1</span>.</p>
+                <div style="display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem;font-family:var(--fuente-mono);font-size:.72rem;color:var(--panel-suave)">
+                  <span style="color:var(--laton-claro)">CNAME</span><span>perfil → ghs.googlehosted.com.</span>
+                  <span style="color:var(--laton-claro)">escala</span><span>min 0 · max 5 · 512Mi · 1 vCPU</span>
+                  <span style="color:var(--laton-claro)">secreto</span><span>ANALYTICS_SALT ← Secret Manager</span>
+                </div>
+              </div>
+              <pre style="margin:0;padding:1.5rem;font-family:var(--fuente-mono);font-size:.75rem;line-height:1.8;color:var(--panel-texto);overflow-x:auto">gcloud run deploy <span style="color:var(--laton-claro)">perfil-web</span> \
+  --source . --region=europe-west1 \
+  --port=8080 --cpu=1 --memory=512Mi \
+  --min-instances=0 --max-instances=5 \
+  --set-secrets=ANALYTICS_SALT=...:latest</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="medicion" style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto;padding:4rem 0">
+      <div data-reveal="" style="max-width:42rem;margin-bottom:2rem">
+        <p style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--laton);font-weight:700;margin:0 0 .5rem">Medición</p>
+        <h2 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .75rem">Medir a la organización que lee, no a la persona que mira.</h2>
+        <p style="margin:0;color:var(--texto-suave);font-size:1rem;text-wrap:pretty">Sin cookies y sin almacenamiento en el navegador: no se accede a información del terminal, así que no procede banner de consentimiento. La IP se usa en memoria y nunca se guarda.</p>
+      </div>
+
+      <div data-reveal="" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:1.25rem;align-items:start">
+
+        <div style="border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);padding:1.5rem">
+          <p style="margin:0 0 1.25rem;font-family:var(--fuente-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--laton)">Recorrido de una petición</p>
+          <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0">
+            <li style="display:grid;grid-template-columns:auto 1fr;gap:.9rem">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:11px;height:11px;border-radius:100px;background:var(--tinta);flex:none"></span><span style="width:2px;flex:1;background-image:linear-gradient(180deg,var(--linea),var(--linea));margin:.25rem 0"></span></div>
+              <div style="padding-bottom:1.1rem"><p style="margin:0;font-size:.9rem;color:var(--texto)"><strong>GET /</strong> llega a Cloud Run</p><p style="margin:.15rem 0 0;font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave)">x-forwarded-for · user-agent · x-client-region</p></div>
+            </li>
+            <li style="display:grid;grid-template-columns:auto 1fr;gap:.9rem">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:11px;height:11px;border-radius:100px;background:var(--tinta);flex:none"></span><span style="width:2px;flex:1;background:var(--linea);margin:.25rem 0"></span></div>
+              <div style="padding-bottom:1.1rem"><p style="margin:0;font-size:.9rem;color:var(--texto)"><strong>middleware.ts</strong> filtra qué cuenta</p><p style="margin:.15rem 0 0;font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave)">no /api/ · no /_ · sin extensión de fichero</p></div>
+            </li>
+            <li style="display:grid;grid-template-columns:auto 1fr;gap:.9rem">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:11px;height:11px;border-radius:100px;background:var(--laton);flex:none;box-shadow:0 0 0 4px rgba(182,146,77,.18)"></span><span style="width:2px;flex:1;background:var(--linea);margin:.25rem 0"></span></div>
+              <div style="padding-bottom:1.1rem"><p style="margin:0;font-size:.9rem;color:var(--texto)"><strong>derivarVisitaId()</strong> — la IP muere aquí</p><p style="margin:.15rem 0 0;font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave)">SHA-256(sal_diaria | ip | ua) → 16 caracteres</p></div>
+            </li>
+            <li style="display:grid;grid-template-columns:auto 1fr;gap:.9rem">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:11px;height:11px;border-radius:100px;background:var(--tinta);flex:none"></span><span style="width:2px;flex:1;background:var(--linea);margin:.25rem 0"></span></div>
+              <div style="padding-bottom:1.1rem"><p style="margin:0;font-size:.9rem;color:var(--texto)"><strong>registrar()</strong> escribe JSON a stdout</p><p style="margin:.15rem 0 0;font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave)">Cloud Logging → BigQuery · nunca bloquea la petición</p></div>
+            </li>
+            <li style="display:grid;grid-template-columns:auto 1fr;gap:.9rem">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:11px;height:11px;border-radius:100px;background:var(--tinta);flex:none"></span></div>
+              <div><p style="margin:0;font-size:.9rem;color:var(--texto)"><strong>Astro SSR</strong> responde en streaming</p><p style="margin:.15rem 0 0;font-family:var(--fuente-mono);font-size:.72rem;color:var(--texto-suave)">al salir: sendBeacon → POST /api/evento → 204</p></div>
+            </li>
+          </ol>
+        </div>
+
+        <div style="border:1px solid var(--panel-linea);border-radius:var(--radio);background:var(--panel);overflow:hidden">
+          <div style="padding:.6rem .95rem;border-bottom:1px solid var(--panel-linea);background:var(--panel-2);font-family:var(--fuente-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--laton-claro)">Derivación en vivo · SHA-256 real en tu navegador</div>
+          <div style="padding:1.25rem">
+            <label style="display:block;font-family:var(--fuente-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--panel-suave);margin-bottom:.35rem">ip (en memoria, nunca almacenada)</label>
+            <input data-val="ip" data-on-input="cambiarIp" style="width:100%;background:var(--panel-2);border:1px solid var(--panel-linea);border-radius:var(--radio);padding:.5rem .7rem;color:var(--panel-texto);font-family:var(--fuente-mono);font-size:.8rem;margin-bottom:.9rem;outline:none" class="xf85a1b5" />
+            <label style="display:block;font-family:var(--fuente-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--panel-suave);margin-bottom:.35rem">sal del día</label>
+            <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.9rem">
+              <code style="flex:1;background:var(--panel-2);border:1px solid var(--panel-linea);border-radius:var(--radio);padding:.5rem .7rem;color:var(--panel-texto);font-family:var(--fuente-mono);font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">ANALYTICS_SALT:<span data-t="fecha"></span></code>
+              <button type="button" data-on-click="rotarDia" style="cursor:pointer;white-space:nowrap;background:transparent;border:1px solid var(--panel-linea);color:var(--laton-claro);border-radius:var(--radio);padding:.5rem .8rem;font-family:var(--fuente-mono);font-size:.72rem;transition:border-color .2s ease" class="x9c38a4d">rotar día →</button>
+            </div>
+            <div style="height:1px;background:var(--panel-linea);margin:1rem 0"></div>
+            <label style="display:block;font-family:var(--fuente-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--panel-suave);margin-bottom:.35rem">visitaId resultante</label>
+            <code style="display:block;background:var(--panel-2);border:1px solid var(--laton);border-radius:var(--radio);padding:.7rem;color:var(--laton-claro);font-family:var(--fuente-mono);font-size:1rem;letter-spacing:.06em;word-break:break-all"><span data-t="hash"></span></code>
+            <p style="margin:.9rem 0 0;font-size:.8rem;line-height:1.5;color:var(--panel-suave)">Cambia la IP o rota el día: el identificador cambia por completo y no hay forma de volver atrás. Nadie puede ser seguido entre días ni entre sitios.</p>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal="" style="margin-top:1.25rem;border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);padding:1.25rem 1.5rem;display:flex;flex-wrap:wrap;gap:1.25rem;align-items:center;justify-content:space-between">
+        <div style="max-width:32rem">
+          <p style="margin:0 0 .2rem;font-size:.95rem;color:var(--texto)"><strong>Atribución por destinatario.</strong> Cada candidatura se envía con <span style="font-family:var(--fuente-mono);font-size:.85em;color:var(--tinta-2)">?ref=</span>, leído en servidor y propagado por los enlaces. Sin persistir nada en tu navegador.</p>
+          <p style="margin:0;font-size:.85rem;color:var(--texto-suave)">Pruébalo: la cabecera del evento de arriba cambia al instante.</p>
+        </div>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+          <button type="button" data-on-click="ref1" style="cursor:pointer;font-family:var(--fuente-mono);font-size:.75rem;border:1px solid var(--linea);background:var(--papel);border-radius:100px;padding:.35rem .85rem;color:var(--tinta-2);transition:border-color .2s ease" class="xc501318">?ref=enfaf</button>
+          <button type="button" data-on-click="ref2" style="cursor:pointer;font-family:var(--fuente-mono);font-size:.75rem;border:1px solid var(--linea);background:var(--papel);border-radius:100px;padding:.35rem .85rem;color:var(--tinta-2);transition:border-color .2s ease" class="xc501318">?ref=acme</button>
+          <button type="button" data-on-click="ref0" style="cursor:pointer;font-family:var(--fuente-mono);font-size:.75rem;border:1px solid var(--linea);background:var(--papel);border-radius:100px;padding:.35rem .85rem;color:var(--texto-suave);transition:border-color .2s ease" class="xc501318">sin ref</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="decisiones" style="background:var(--papel-2);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:4rem 0">
+      <div style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto">
+        <div data-reveal="" style="max-width:42rem;margin-bottom:2rem">
+          <p style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--laton);font-weight:700;margin:0 0 .5rem">Decisiones de arquitectura</p>
+          <h2 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:clamp(1.5rem,3vw,2rem);margin:0">Cada una con su alternativa descartada.</h2>
+        </div>
+        <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(2,minmax(0,1fr))">
+
+          <div data-reveal="" style="background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:1.5rem;transition:border-color .2s ease" class="xf3f109b">
+            <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.1rem;margin:0 0 .6rem">Astro con renderizado en servidor</h3>
+            <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">Cero JavaScript por defecto: el HTML se genera en servidor y solo se hidrata lo marcado como isla. SSR y no estático por dos motivos concretos: leer <span style="font-family:var(--fuente-mono);font-size:.85em">?ref=</span> en tiempo de petición y emitir la respuesta en streaming.</p>
+            <p style="margin:0;font-size:.82rem;color:var(--texto-suave);border-left:2px solid var(--linea);padding-left:.75rem"><strong style="color:var(--texto)">Descartado:</strong> generación estática pura — habría exigido analítica en cliente. Las rutas que no la necesiten pueden marcarse con <span style="font-family:var(--fuente-mono);font-size:.85em">prerender = true</span>: la decisión es por ruta, no global.</p>
+          </div>
+
+          <div data-reveal="" style="background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:1.5rem;transition:border-color .2s ease" class="xf3f109b">
+            <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.1rem;margin:0 0 .6rem">Contenido tipado con Zod</h3>
+            <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">Los proyectos viven en Markdown bajo una colección con esquema. El frontmatter se valida en compilación: la diferencia entre descubrir un error en CI y descubrirlo en un cliente.</p>
+            <pre style="margin:0;background:var(--papel-2);border:1px solid var(--linea);border-radius:var(--radio);padding:.8rem;font-family:var(--fuente-mono);font-size:.72rem;line-height:1.7;color:var(--tinta-2);overflow-x:auto">schema: z.object(&#123;
+  titulo: z.string(),
+  metricas: z.array(z.object(&#123;
+    valor: z.string(),
+    etiqueta: z.string() &#125;)),
+&#125;)</pre>
+          </div>
+
+          <div data-reveal="" style="background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:1.5rem;transition:border-color .2s ease" class="xf3f109b">
+            <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.1rem;margin:0 0 .6rem">Contenedor endurecido</h3>
+            <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">Tres etapas, superficie mínima en la imagen final y proceso sin privilegios. <span style="font-family:var(--fuente-mono);font-size:.85em">dumb-init</span> propaga SIGTERM para que Cloud Run drene conexiones al escalar a cero.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:.35rem">
+              <span style="font-size:.72rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.12rem .6rem;color:var(--texto-suave)">sin dev deps</span>
+              <span style="font-size:.72rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.12rem .6rem;color:var(--texto-suave)">sin código fuente</span>
+              <span style="font-size:.72rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.12rem .6rem;color:var(--texto-suave)">UID 10001</span>
+              <span style="font-size:.72rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.12rem .6rem;color:var(--texto-suave)">SIGTERM limpio</span>
+            </div>
+          </div>
+
+          <div data-reveal="" style="background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:1.5rem;transition:border-color .2s ease" class="xf3f109b">
+            <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.1rem;margin:0 0 .6rem">Servicio propio, no dentro del monolito</h3>
+            <p style="margin:0 0 .9rem;font-size:.9rem;color:var(--texto-suave)">La plataforma es un monolito modular por coherencia transaccional y auditoría con hash-chain. Esas razones no aplican a un sitio que no escribe en base de datos ni participa en transacciones.</p>
+            <p style="margin:0;font-size:.82rem;color:var(--texto-suave);border-left:2px solid var(--linea);padding-left:.75rem"><strong style="color:var(--texto)">Descartado:</strong> <span style="font-family:var(--fuente-mono);font-size:.85em">europe-southwest1</span>, más cercana, pero sin <em>domain mappings</em> de Cloud Run. Sin balanceador HTTPS en el proyecto, el mapeo nativo es la vía probada.</p>
+          </div>
+
+        </div>
+
+        <div data-reveal="" style="margin-top:1.25rem;background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:1.5rem">
+          <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.1rem;margin:0 0 .9rem">SEO técnico y accesibilidad, sin dependencias</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">canonical por página</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">Open Graph</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">JSON-LD Person + ORCID</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">sitemap-index.xml</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">robots.txt</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">HTML semántico</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">aria-current en navegación</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">prefers-reduced-motion</span>
+            <span style="font-size:.75rem;font-family:var(--fuente-mono);border:1px solid var(--linea);border-radius:100px;padding:.15rem .65rem;color:var(--texto-suave)">tokens propios, cero CSS de terceros</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto;padding:4rem 0 3rem">
+      <div data-reveal="" style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:3rem;align-items:start">
+        <div>
+          <p style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--laton);font-weight:700;margin:0 0 .5rem">Contacto</p>
+          <h2 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:clamp(1.5rem,3vw,2rem);margin:0 0 1rem">Puedo enseñar el código y la arquitectura en una conversación técnica.</h2>
+          <p style="margin:0 0 1.5rem;color:var(--texto-suave);font-size:1rem;max-width:34rem">Incluido el sistema de trading, cuyo repositorio es privado: pantalla compartida, recorrido por los microservicios y las decisiones que hay detrás.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem">
+            <a href="https://github.com/elb8-dev" style="display:inline-flex;align-items:center;gap:.45rem;text-decoration:none;background:var(--tinta);color:var(--papel);border-radius:100px;padding:.6rem 1.15rem;font-size:.95rem;transition:background .2s ease" class="x6d4f2d7">github.com/elb8-dev
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <button type="button" data-on-click="copiar" style="cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;border:1px solid var(--linea);background:var(--papel-2);color:var(--tinta);border-radius:100px;padding:.6rem 1.15rem;font-size:.95rem;font-family:inherit;transition:border-color .2s ease" class="xc501318"><span data-t="etiquetaCopia"></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div style="border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);padding:1.5rem">
+          <p style="margin:0 0 1rem;font-family:var(--fuente-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--laton)">Ficha</p>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:.6rem 1.25rem;font-size:.88rem">
+            <span style="color:var(--texto-suave)">Sitio</span><span style="font-family:var(--fuente-mono);font-size:.82rem;color:var(--tinta-2)">perfil.dalyko.com</span>
+            <span style="color:var(--texto-suave)">Servicio</span><span style="font-family:var(--fuente-mono);font-size:.82rem;color:var(--texto)">perfil-web · europe-west1</span>
+            <span style="color:var(--texto-suave)">Código</span><span style="font-family:var(--fuente-mono);font-size:.82rem;color:var(--texto)">elb8-dev/dalyko-web · MIT</span>
+            <span style="color:var(--texto-suave)">Correo</span><a href="mailto:daly@icam.es" style="font-family:var(--fuente-mono);font-size:.82rem;color:var(--tinta-2);text-decoration:none;justify-self:start;border-bottom:1px solid var(--linea);transition:border-color .2s ease" class="x0358f3f">daly@icam.es</a>
+            <span style="color:var(--texto-suave)">ORCID</span><a href="https://orcid.org/0009-0008-6684-6726" style="font-family:var(--fuente-mono);font-size:.82rem;color:var(--tinta-2);text-decoration:none;justify-self:start;border-bottom:1px solid var(--linea);transition:border-color .2s ease" class="x0358f3f">0009-0008-6684-6726</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================================================
+           FORMULARIO DE CONTACTO — PENDIENTE DE INTEGRACIÓN MANUAL
+           ==========================================================================
+           Destino del envío: eloy@dalyko.com
+
+           Ahora mismo el envío está simulado en `enviarFormulario()` (logic class):
+           valida los campos, muestra el estado de envío y devuelve una referencia
+           local. NO sale nada del navegador.
+
+           Para conectarlo, en el repo `elb8-dev/dalyko-web`:
+
+           1. Crear `src/pages/api/contacto.ts` (Astro API route, `prerender = false`)
+              que reciba { nombre, correo, organizacion, mensaje, ref } por POST.
+           2. Enviar el correo a eloy@dalyko.com desde ese endpoint. Opciones que
+              encajan con la infraestructura actual (Cloud Run + Secret Manager):
+                - API de un proveedor transaccional (Resend / SendGrid / Postmark)
+                  con la API key en Secret Manager, igual que ANALYTICS_SALT.
+                - Gmail API con la cuenta de Workspace de dalyko.com.
+              Añadir la variable al `gcloud run deploy` de `.github/workflows/deploy.yml`
+              con `--set-secrets=`.
+           3. Anti-abuso: honeypot (campo `empresa_web` oculto, ya incluido abajo),
+              límite por IP en memoria y validación en servidor. Sin captcha de
+              terceros, para no romper la política de cero cookies del sitio.
+           4. Registrar el envío como evento de analítica reutilizando `registrar()`
+              con tipo 'interaccion', para que la atribución `?ref=` se conserve.
+           5. En el cliente: sustituir la simulación por
+              `await fetch('/api/contacto', { method: 'POST', body: JSON.stringify(...) })`
+              y mapear 204 -> estado 'ok', cualquier otra cosa -> 'error'.
+           ========================================================================== -->
+      <div data-reveal="" style="margin-top:2.5rem;border:1px solid var(--linea);border-radius:var(--radio);background:var(--papel-2);overflow:hidden">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--linea)">
+          <p style="margin:0;font-family:var(--fuente-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--laton)">Enviar un comentario</p>
+          <p style="margin:0;font-size:.78rem;color:var(--texto-suave)">Llega a <span style="font-family:var(--fuente-mono);font-size:.95em;color:var(--tinta-2)">eloy@dalyko.com</span> · respuesta en un día laborable</p>
+        </div>
+
+        <div data-if="formAbierto" style="display:contents">
+          <form data-on-submit="enviar" style="padding:1.5rem;display:grid;gap:1rem">
+            <div style="display:grid;gap:1rem;grid-template-columns:repeat(2,minmax(0,1fr))">
+              <div>
+                <label for="f-nombre" style="display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--texto-suave);margin-bottom:.35rem">Nombre</label>
+                <input id="f-nombre" type="text" autoComplete="name" data-val="fNombre" data-on-input="cNombre" style="width:100%;background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:.6rem .8rem;color:var(--texto);font-family:inherit;font-size:.95rem;outline:none;transition:border-color .2s ease" class="xf85a1b5" />
+              </div>
+              <div>
+                <label for="f-correo" style="display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--texto-suave);margin-bottom:.35rem">Correo</label>
+                <input id="f-correo" type="email" autoComplete="email" data-val="fCorreo" data-on-input="cCorreo" style="width:100%;background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:.6rem .8rem;color:var(--texto);font-family:inherit;font-size:.95rem;outline:none;transition:border-color .2s ease" class="xf85a1b5" />
+              </div>
+            </div>
+
+            <div>
+              <label for="f-org" style="display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--texto-suave);margin-bottom:.35rem">Organización <span style="text-transform:none;letter-spacing:0;color:var(--texto-suave);opacity:.8">(opcional)</span></label>
+              <input id="f-org" type="text" autoComplete="organization" data-val="fOrg" data-on-input="cOrg" style="width:100%;background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:.6rem .8rem;color:var(--texto);font-family:inherit;font-size:.95rem;outline:none;transition:border-color .2s ease" class="xf85a1b5" />
+            </div>
+
+            <div>
+              <label for="f-mensaje" style="display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--texto-suave);margin-bottom:.35rem">Mensaje</label>
+              <textarea id="f-mensaje" rows="5" data-val="fMensaje" data-on-input="cMensaje" style="width:100%;background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:.6rem .8rem;color:var(--texto);font-family:inherit;font-size:.95rem;line-height:1.6;outline:none;resize:vertical;transition:border-color .2s ease" class="xf85a1b5"></textarea>
+            </div>
+
+            <!-- Honeypot: invisible para personas, tentador para bots. El servidor descarta el envío si viene relleno. -->
+            <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+              <label for="f-empresa-web">No rellenar</label>
+              <input id="f-empresa-web" type="text" tabIndex="-1" autoComplete="off" data-on-input="cTrampa" />
+            </div>
+
+            <div data-if="hayError" style="display:contents">
+              <p role="alert" style="margin:0;font-size:.85rem;color:#9c3a2f;background:rgba(156,58,47,.08);border:1px solid rgba(156,58,47,.28);border-radius:var(--radio);padding:.6rem .8rem"><span data-t="mensajeError"></span></p>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;padding-top:.25rem;border-top:1px solid var(--linea);margin-top:.25rem">
+              <p style="margin:0;font-size:.78rem;color:var(--texto-suave);max-width:30rem">Se envía únicamente lo que escribes aquí, más la atribución <span style="font-family:var(--fuente-mono);font-size:.95em">ref=<span data-t="refTexto"></span></span>. Sin cookies ni seguimiento adicional.</p>
+              <button type="submit" style="cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;background:var(--tinta);color:var(--papel);border:0;border-radius:100px;padding:.65rem 1.35rem;font-family:inherit;font-size:.95rem;transition:background .2s ease,opacity .2s ease;opacity:" data-style="cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;background:var(--tinta);color:var(--papel);border:0;border-radius:100px;padding:.65rem 1.35rem;font-family:inherit;font-size:.95rem;transition:background .2s ease,opacity .2s ease;opacity:{opacidadEnvio}" class="x6d4f2d7"><span data-t="etiquetaEnvio"></span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div data-if="enviado" style="display:contents">
+          <div style="padding:2.25rem 1.5rem;text-align:center">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:100px;background:rgba(182,146,77,.16);border:1px solid rgba(182,146,77,.4);color:#8a6d2f;margin-bottom:.9rem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 6 9 17l-5-5"></path></svg>
+            </span>
+            <h3 style="font-family:var(--fuente-titulo);color:var(--tinta);font-size:1.2rem;margin:0 0 .4rem">Mensaje registrado</h3>
+            <p style="margin:0 0 .3rem;font-size:.95rem;color:var(--texto-suave)">Gracias. Te respondo desde <span style="font-family:var(--fuente-mono);font-size:.9em;color:var(--tinta-2)">eloy@dalyko.com</span> en un día laborable.</p>
+            <p style="margin:0 0 1.25rem;font-family:var(--fuente-mono);font-size:.8rem;color:var(--texto-suave)">Referencia: <span data-t="refEnvio"></span></p>
+            <button type="button" data-on-click="otro" style="cursor:pointer;background:none;border:0;padding:0;font-family:inherit;font-size:.88rem;color:var(--tinta-2);text-decoration:underline;text-underline-offset:3px" class="xe210f37">Escribir otro mensaje</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="border-top:1px solid var(--linea);padding:1.75rem 0;font-size:.85rem;color:var(--texto-suave)">
+    <div style="width:min(100% - 2.5rem,var(--ancho));margin-inline:auto;display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center">
+      <span>© 2026 Eloy R. Becerra Daly · Código bajo licencia MIT; el contenido no se licencia para reutilización.</span>
+      <span style="font-family:var(--fuente-mono);font-size:.75rem">Astro 7 · Node · Cloud Run · europe-west1</span>
+    </div>
+  </footer>
+</div>
+    <script>
+      import { iniciar } from '../scripts/perfil';
+      iniciar();
+    </script>
+  </body>
+</html>

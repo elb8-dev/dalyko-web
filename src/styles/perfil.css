@@ -1,0 +1,39 @@
+
+  :root{
+    --tinta:#0f2a38; --tinta-2:#163f52; --laton:#b6924d; --laton-claro:#c9a968;
+    --papel:#fcfaf5; --papel-2:#f4efe6; --texto:#2a2723; --texto-suave:#6b6659; --linea:#e4dbcc;
+    --panel:#0f2a38; --panel-2:#0b2029; --panel-linea:rgba(201,169,104,.22);
+    --panel-texto:#e6e2d9; --panel-suave:#a09a8c;
+    --fuente-titulo:Georgia,'Times New Roman',serif;
+    --fuente-texto:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --fuente-mono:ui-monospace,'Cascadia Code',Consolas,monospace;
+    --ancho:68rem; --radio:6px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{font-family:var(--fuente-texto);line-height:1.6;color:var(--texto);background:var(--papel);-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--papel)}
+  a{color:var(--tinta-2);text-underline-offset:3px}
+  a:hover{color:var(--laton)}
+  @media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth;scroll-padding-top:5.5rem} }
+  @keyframes aparecer{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes fluir{from{background-position:0 0}to{background-position:28px 0}}
+  @keyframes latir{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes cursor{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @supports (animation-timeline: view()){
+    @media (prefers-reduced-motion: no-preference){
+      [data-reveal]{opacity:0;animation:aparecer linear both;animation-timeline:view();animation-range:entry 4% cover 22%}
+    }
+  }
+
+
+/* Estados :hover/:focus extraidos del comp */
+.xed60119:hover{background:var(--tinta);color:var(--papel)}
+.x6d4f2d7:hover{background:var(--tinta-2);color:var(--papel)}
+.xc501318:hover{border-color:var(--laton);color:var(--tinta)}
+.xd0b9677:hover{border-color:var(--laton-claro);box-shadow:0 10px 30px -20px rgba(15,42,56,.55)}
+.xe210f37:hover{color:var(--laton)}
+.xd231fe1:hover{border-color:var(--laton-claro);color:var(--laton-claro)}
+.xf85a1b5:focus{border-color:var(--laton)}
+.x9c38a4d:hover{border-color:var(--laton);color:var(--laton-claro)}
+.xf3f109b:hover{border-color:var(--laton-claro)}
+.x0358f3f:hover{color:var(--laton);border-color:var(--laton)}
